@@ -23,6 +23,7 @@ namespace Ocelot.Middleware
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Options;
+    using Ocelot.Cluster;
     using Ocelot.Configuration;
     using Ocelot.Configuration.File;
     using Ocelot.Configuration.Provider;
@@ -131,6 +132,13 @@ namespace Ocelot.Middleware
             builder.UseHttpRequesterMiddleware();
 
             return builder;
+        }
+
+        private static void CreateOcelotClusterMembership(IApplicationBuilder builder)
+        {
+            var clusterMemberUriSetter = (IClusterMemberUriSetter)builder.ApplicationServices.GetService(typeof(IClusterMemberUriSetter));
+
+            clusterMemberUriSetter.Set();
         }
 
         private static async Task<IOcelotConfiguration> CreateConfiguration(IApplicationBuilder builder)

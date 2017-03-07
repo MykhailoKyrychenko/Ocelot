@@ -12,6 +12,7 @@ namespace Ocelot.ManualTest
             
             builder.ConfigureServices(s => {
                 s.AddSingleton(builder);
+                s.AddSingleton<string[]>(args);
             });
 
             builder.UseKestrel()
