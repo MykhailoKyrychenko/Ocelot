@@ -2,8 +2,9 @@ using System;
 
 namespace Ocelot.Cluster
 {
-    public interface IClusterMemberUriProvider
+    public interface IKnownNodeUriRepository
     {
         Uri Get();
+        void Set(Uri uri);
     }
 }

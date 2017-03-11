@@ -1,18 +1,22 @@
 using System;
+using Ocelot.Responses;
 
 namespace Ocelot.Cluster
 {
-    public class ArgumentParser : IArgumentParser
+    public static class ArgumentParser
     {
-        private string[] _args;
-
-        public ArgumentParser(string[] args)
+        public static Response<Arguments> Parse(string[] args)
         {
-            _args = args;
-        }
-        public Arguments Parse()
-        {
-            return new Arguments(new Uri(_args[0]));
+            try
+            {
+                var arguments = new Arguments(new Uri(args[0]));
+                return new OkResponse<Arguments>(arguments);
+            }
+            catch(Exception ex)
+            {
+                var error = new UnableToParseArgumentsError(ex.Message);
+                return new ErrorResponse<Arguments>(error);;
+            }
         }
     }
 }

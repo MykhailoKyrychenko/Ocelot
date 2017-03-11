@@ -6,9 +6,9 @@ namespace Ocelot.Cluster
     {
         public Arguments(Uri uri)
         {
-            Uri = uri;
+            KnownNodeUri = uri;
         }
 
-        public Uri Uri { get; private set; }
+        public Uri KnownNodeUri { get; private set; }
     }
 }

@@ -134,13 +134,6 @@ namespace Ocelot.Middleware
             return builder;
         }
 
-        private static void CreateOcelotClusterMembership(IApplicationBuilder builder)
-        {
-            var clusterMemberUriSetter = (IClusterMemberUriSetter)builder.ApplicationServices.GetService(typeof(IClusterMemberUriSetter));
-
-            clusterMemberUriSetter.Set();
-        }
-
         private static async Task<IOcelotConfiguration> CreateConfiguration(IApplicationBuilder builder)
         {
             var fileConfig = (IOptions<FileConfiguration>)builder.ApplicationServices.GetService(typeof(IOptions<FileConfiguration>));

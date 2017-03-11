@@ -1,5 +1,6 @@
 using System;
 using Ocelot.Cluster;
+using Ocelot.Responses;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
@@ -8,13 +9,8 @@ namespace Ocelot.UnitTests.Cluster
 {
     public class ArgumentParserTests
     {
-        private ArgumentParser _parser;
         private string[] _args;
-        private Arguments _result;
-
-        public ArgumentParserTests()
-        {
-        }
+        private Response<Arguments> _result;
 
         [Fact]
         public void should_return_url()
@@ -31,17 +27,16 @@ namespace Ocelot.UnitTests.Cluster
         private void GivenTheFollowingArgs(string[] args)
         {
             _args = args;
-            _parser = new ArgumentParser(_args);
         }
 
         private void WhenIParse()
         {
-            _result = _parser.Parse();
+            _result = ArgumentParser.Parse(_args);
         }
 
         private void ThenTheFollowingIsReturned(Arguments expected)
         {
-            _result.Uri.ShouldBe(expected.Uri);
+            _result.Data.KnownNodeUri.ShouldBe(expected.KnownNodeUri);
         }
     }
 }

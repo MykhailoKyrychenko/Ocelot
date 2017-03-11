@@ -2,7 +2,7 @@ using System;
 
 namespace Ocelot.Cluster
 {
-    public class InMemoryClusterMemberUriRepository : IClusterMemberUriRepository
+    public class InMemoryKnownNodeUriRepository : IKnownNodeUriRepository
     {
         private Uri _uri;
         

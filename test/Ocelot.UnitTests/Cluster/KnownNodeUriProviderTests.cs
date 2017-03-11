@@ -7,17 +7,17 @@ using Xunit;
 
 namespace Ocelot.UnitTests.Cluster
 {
-    public class ClusterMemberUriProviderTests
+    public class KnownNodeUriProviderTests
     {
         private Uri _uri;
-        private Mock<IClusterMemberUriRepository> _repo;
-        private ClusterMemberUriProvider _provider;
+        private Mock<IKnownNodeUriRepository> _repo;
+        private KnownNodeUriProvider _provider;
         private Uri _result;
 
-        public ClusterMemberUriProviderTests()
+        public KnownNodeUriProviderTests()
         {
-            _repo = new Mock<IClusterMemberUriRepository>();
-            _provider = new ClusterMemberUriProvider(_repo.Object);
+            _repo = new Mock<IKnownNodeUriRepository>();
+            _provider = new KnownNodeUriProvider(_repo.Object);
         }
 
         [Fact]

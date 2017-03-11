@@ -6,18 +6,15 @@ using Xunit;
 
 namespace Ocelot.UnitTests.Cluster
 {
-    public class SetClusterMemberTests
+    public class KnownNodeUriSetterTests
     {
         private Arguments _args;
-        private Mock<IArgumentParser> _parser;
-        private Mock<IClusterMemberUriRepository> _repo;
-        private ClusterMemberSetter _setter;
+        private Mock<IKnownNodeUriRepository> _repo;
+        private KnownNodeUriSetter _setter;
 
-        public SetClusterMemberTests()
+        public KnownNodeUriSetterTests()
         {
-            _parser = new Mock<IArgumentParser>();
-            _repo = new Mock<IClusterMemberUriRepository>();
-            _setter = new ClusterMemberSetter(_parser.Object, _repo.Object);
+            _repo = new Mock<IKnownNodeUriRepository>();
         }
 
         [Fact]
@@ -34,20 +31,18 @@ namespace Ocelot.UnitTests.Cluster
         private void GivenTheArgumentParserReturns(Arguments args)
         {
             _args = args;
-            _parser
-                .Setup(x => x.Parse())
-                .Returns(_args);
         }
 
         private void WhenISetTheClusterMember()
         {
+            _setter = new KnownNodeUriSetter(_repo.Object, _args);
             _setter.Set();
         }
 
         private void ThenTheClusterMemberRepoIsCalledCorrectly()
         {
             _repo
-                .Verify(x => x.Set(_args.Uri), Times.Once);
+                .Verify(x => x.Set(_args.KnownNodeUri), Times.Once);
         }
     }
 }

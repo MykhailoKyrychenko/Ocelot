@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Ocelot.Cluster;
 
 namespace Ocelot.ManualTest
 {
@@ -8,11 +9,20 @@ namespace Ocelot.ManualTest
     {
         public static void Main(string[] args)
         {
-            IWebHostBuilder builder = new WebHostBuilder();
+            var builder = new WebHostBuilder();
             
+            var arguments = ArgumentParser.Parse(args);
+
+            if(!arguments.IsError)
+            {
+                builder.ConfigureServices(s => {
+                    s.AddSingleton<Arguments>(arguments.Data);
+                });
+            }
+
             builder.ConfigureServices(s => {
                 s.AddSingleton(builder);
-                s.AddSingleton<string[]>(args);
+                s.AddSingleton(arguments);
             });
 
             builder.UseKestrel()

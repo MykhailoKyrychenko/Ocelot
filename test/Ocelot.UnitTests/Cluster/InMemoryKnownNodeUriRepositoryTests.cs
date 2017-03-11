@@ -6,15 +6,15 @@ using Xunit;
 
 namespace Ocelot.UnitTests.Cluster
 {
-    public class ClusterMemberUriRepositoryTests
+    public class InMemoryKnownNodeUriRepositoryTests
     {
         private Uri _uri;
-        private InMemoryClusterMemberUriRepository _repo;
+        private InMemoryKnownNodeUriRepository _repo;
         private Uri _result;
 
-        public ClusterMemberUriRepositoryTests()
+        public InMemoryKnownNodeUriRepositoryTests()
         {
-            _repo = new InMemoryClusterMemberUriRepository();
+            _repo = new InMemoryKnownNodeUriRepository();
         }
         
         [Fact]
