@@ -38,6 +38,8 @@ using Ocelot.Responder;
 using Ocelot.ServiceDiscovery;
 using FileConfigurationProvider = Ocelot.Configuration.Provider.FileConfigurationProvider;
 using Ocelot.RateLimit;
+using Ocelot.Controllers;
+using System.Reflection;
 
 namespace Ocelot.DependencyInjection
 {
@@ -109,10 +111,15 @@ namespace Ocelot.DependencyInjection
                         }
                     }).AddResourceOwnerValidator<OcelotResourceOwnerPasswordValidator>();
             }
-        
+
+            var assembly = typeof(FileConfigurationController).GetTypeInfo().Assembly;
+
             services.AddMvcCore()
+                .AddApplicationPart(assembly)
+                .AddControllersAsServices()
                 .AddAuthorization()
                 .AddJsonFormatters();
+
             services.AddLogging();
             services.AddSingleton<IFileConfigurationRepository, FileConfigurationRepository>();
             services.AddSingleton<IFileConfigurationSetter, FileConfigurationSetter>();
@@ -143,6 +150,7 @@ namespace Ocelot.DependencyInjection
             services.AddSingleton<IAuthenticationHandlerFactory, AuthenticationHandlerFactory>();
             services.AddSingleton<IAuthenticationHandlerCreator, AuthenticationHandlerCreator>();
             services.AddSingleton<IRateLimitCounterHandler, MemoryCacheRateLimitCounterHandler>();
+            services.AddSingleton<IHttpClientCache, MemoryHttpClientCache>();
 
             // see this for why we register this as singleton http://stackoverflow.com/questions/37371264/invalidoperationexception-unable-to-resolve-service-for-type-microsoft-aspnetc
             // could maybe use a scoped data repository
