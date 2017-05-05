@@ -37,15 +37,15 @@ namespace Ocelot.ManualTest
                 })
                 .WithDictionaryHandle();
             };
-            services.AddOcelotOutputCaching(settings);
-            services.AddOcelot(Configuration);
+
+            services.AddOcelot(Configuration, settings);
         }
 
-        public async void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
 
-            await app.UseOcelot();
+            app.UseOcelot().Wait();
         }
     }
 }

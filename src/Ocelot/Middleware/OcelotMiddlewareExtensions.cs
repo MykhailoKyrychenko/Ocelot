@@ -62,6 +62,9 @@ namespace Ocelot.Middleware
             // This is registered first so it can catch any errors and issue an appropriate response
             builder.UseResponderMiddleware();
 
+            // Initialises downstream request
+            builder.UseDownstreamRequestInitialiser();
+
             // Then we get the downstream route information
             builder.UseDownstreamRouteFinderMiddleware();
 
@@ -140,15 +143,20 @@ namespace Ocelot.Middleware
             var configSetter = (IFileConfigurationSetter)builder.ApplicationServices.GetService(typeof(IFileConfigurationSetter));
             
             var configProvider = (IOcelotConfigurationProvider)builder.ApplicationServices.GetService(typeof(IOcelotConfigurationProvider));
-            
-            var config = await configSetter.Set(fileConfig.Value);
-            
-            if(config == null || config.IsError)
+
+            var ocelotConfiguration = await configProvider.Get();
+
+            if (ocelotConfiguration == null || ocelotConfiguration.Data == null || ocelotConfiguration.IsError)
             {
-                throw new Exception("Unable to start Ocelot: configuration was not set up correctly.");
+                var config = await configSetter.Set(fileConfig.Value);
+
+                if (config == null || config.IsError)
+                {
+                    throw new Exception("Unable to start Ocelot: configuration was not set up correctly.");
+                }
             }
 
-            var ocelotConfiguration = configProvider.Get();
+            ocelotConfiguration = await configProvider.Get();
 
             if(ocelotConfiguration == null || ocelotConfiguration.Data == null || ocelotConfiguration.IsError)
             {
